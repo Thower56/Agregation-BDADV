@@ -1,0 +1,71 @@
+@startuml
+!define primary_key(x) <b><color:#b8861b><&key></color> x</b>
+!define foreign_key(x) <color:#aaaaaa><&key></color> x
+!define column(x) <color:#efefef><&media-record></color> x
+!define table(x) entity x << (T, white) >>
+
+
+table( clients ) {
+    primary_key( id ): int
+    column( nom ): varchar
+    column( prenom ): varchar
+    foreign_key( id_region ): int <<FK>>
+}
+table( facture ) {
+    primary_key( id ): int
+    foreign_key( id_client ): int <<FK>>
+}
+table( ligne_facture ) {
+    primary_key( id ): int
+    foreign_key( id_produit ): int <<FK>>
+    foreign_key( id_Facture ): int <<FK>>
+}
+table( produits ) {
+    primary_key( id ): int
+    column( description ): varchar
+    column( prix ) : double
+    foreign_key( id_succursales): int <<FK>>
+}
+table( ingrediants ){
+    primary_key( id ): int
+    column( description ): varchar
+    foreign_key( id_produit ): int <<FK>>
+    foreign_key( id_fournisseur ): int <<FK>>
+}
+table( fournisseur ){
+    primary_key( id ): int
+    column( nom ): varchar
+}
+table( regions ){
+    primary_key( id ): int
+    column( Nom ): string
+}
+table( succursales ) {
+    primary_key( id ): int
+    column( code_postal ): varchar
+    foreign_key( id_region ): int <<FK>>
+}
+table( employes ) {
+    primary_key( id ): int
+    column( nom ): string
+    column( prenom ): string
+    foreign_key( type_emplois_id ) : int <<FK>>
+}
+table( type_emplois ) {
+    primary_key( id ): int
+    column( description ): varchar
+}
+
+
+succursales }|--|| regions
+clients }|--|| regions
+produits }|--|| ingrediants
+ingrediants }|--|| fournisseur
+facture }|--|| clients
+facture }|--|| ligne_facture
+employes }|--|| type_emplois
+employes }|--|| succursales
+produits }|--|| succursales
+ligne_facture }|--|| produits
+
+@enduml
